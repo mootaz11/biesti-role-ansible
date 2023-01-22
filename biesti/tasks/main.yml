@@ -1,0 +1,25 @@
+---
+# tasks file for biesti
+
+- name: Install java 17 
+  include_tasks:  install-java.yml
+
+- name: Install maven 3.6.3 
+  include_tasks:  install-maven.yml
+
+- name: Install nodejs
+  include_tasks: install-node.yml
+
+- name: Install mongodb
+  include_tasks:  install-mongodb.yml
+
+- name: Clone and build backends
+  include_tasks: clone-build-backend.yml
+
+- name: Build Frontends
+  include_tasks: deploy-frontends.yml
+
+
+
+- name: Install nginx
+  include_tasks: install-nginx.yml

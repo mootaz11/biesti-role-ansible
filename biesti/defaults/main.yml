@@ -1,0 +1,25 @@
+---
+#java params
+java_packages:
+  - java-17-openjdk
+java_home: ""
+
+git_repo: git@github.com:aziz68jouini/biesti.git
+
+project_folder: "/biesti_repo"
+
+#maven vars
+maven_version: 3.6.3
+
+nodejs_version: 16
+
+frontends:
+  - {path: "/biesti_repo",name: "appwebfront", dist: "futo-ng",port: 80 }
+  - {path: "/biesti_repo",name: "appwebfrontadmin", dist: "bulona-angular",port: 8087}
+
+
+backends:
+  - {location: "/commonApi" ,path: "/biesti_repo",name: "AppCommon",artifact: "AppCommon-0.0.1-SNAPSHOT.jar",port: "8881",description: "Biesti Common Service"}
+  - {location: "/authApi" ,path: "/biesti_repo",name: "AppAuth",artifact: "AppAuth-0.0.1-SNAPSHOT.jar",port: "8880", description: "Biesti Auth Service"}
+  - {location: "/projectApi" ,path: "/biesti_repo",name: "AppProject",artifact: "AppProject-0.0.1-SNAPSHOT.jar",port: "8882", description: "Biesti App Service"}
+  - {location: "/statApi" ,path: "/biesti_repo",name: "AppStat",artifact: "AppStat-0.0.1-SNAPSHOT.jar",port: "8080", description: "Stat App Service"}

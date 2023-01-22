@@ -1,0 +1,35 @@
+#- name: install frontend packages
+#  shell: "npm install"
+#  args:
+#    chdir: "{{item.path}}/{{item.name}}"
+#  with_items: "{{ frontends }}"
+
+
+#- name: Build frontends
+#  shell: "npm run build"
+#  args:
+#    chdir: "{{item.path}}/{{item.name}}"
+#  with_items: "{{ frontends }}"
+
+
+#- name: Copy dist folders to nginx home folder
+#  copy:
+#    src: "{{project_folder}}/{{item.name}}/dist/{{item.dist}}"
+#    dest: "/usr/share/nginx/"
+#    mode: 0644
+#  with_items: "{{frontends}}"
+
+
+- name: generate nginx configuration
+  template:
+    src: "nginx.conf.j2"
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Ensure nginx is running and and enabled to start automatically on reboots
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started

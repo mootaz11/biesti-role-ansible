@@ -1,0 +1,5 @@
+
+- name: deploy biesti
+  hosts: localhost
+  roles:
+    - biesti

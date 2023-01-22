@@ -1,0 +1,13 @@
+[Unit]
+Description={{item.description}}
+
+[Service]
+WorkingDirectory={{project_folder}}/{{item.name}}/target
+ExecStart=/usr/bin/java -Xms128m -Xmx256m -jar {{item.artifact}}
+User=root
+Type=simple
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

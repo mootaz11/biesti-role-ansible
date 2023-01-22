@@ -1,0 +1,9 @@
+- name: Add NodeSource yum repository
+  shell: curl -sL https://rpm.nodesource.com/setup_{{node_version}}.x | sudo bash -
+
+
+- name: Install Nodejs and npm
+  yum:
+    name: nodejs
+    state: present
+

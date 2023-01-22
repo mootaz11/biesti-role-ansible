@@ -1,0 +1,30 @@
+- name: Download maven {{maven_version}}
+  get_url:
+    url: https://downloads.apache.org/maven/maven-3/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz
+    dest: /tmp
+    mode: '0440'
+
+- name: extract maven {{maven_version}}
+  unarchive:
+    src: /tmp/apache-maven-{{maven_version}}-bin.tar.gz
+    dest: /opt
+    remote_src: yes
+
+
+- name: Create a symbolic link to maven {{maven_version}}
+  ansible.builtin.file:
+    src: /opt/apache-maven-{{maven_version}}
+    dest: /opt/maven
+    owner: root
+    group: root
+    state: link
+
+
+- name: Set MAVEN_HOME if configured.
+  template:
+    src: maven_home.sh.j2
+    dest: /etc/profile.d/maven.sh
+    mode: 0644
+
+- name: load env variables
+  shell: source /etc/profile.d/maven.sh

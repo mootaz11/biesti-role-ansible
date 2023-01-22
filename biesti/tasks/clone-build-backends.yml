@@ -1,0 +1,43 @@
+- name: Check if biesti_repo directory exists.
+  stat:
+    path: "{{project_folder}}"
+  register: biesti_repo
+
+
+- name: Clone repo from github
+  git:
+    repo: "{{git_repo}}"
+    dest: "{{project_folder}}"
+  when: ((biesti_repo.stat.exists is undefined) or (not biesti_repo.stat.exists))
+
+
+
+- name: Build java backends
+  shell: "mvn install"
+  args:
+    chdir: "{{item.path}}/{{item.name}}"
+  with_items: "{{ backends }}"
+
+
+- name: generate services
+  template:
+    src: "biesti.service.j2"
+    dest: "/etc/systemd/system/biesti_{{item.name}}.service"
+    mode: 0644
+    group: root
+    owner: root
+  with_items: "{{ backends }}"  
+
+
+- name: Reload systemd daemon to add new configs
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+
+- name: Ensure that services are running
+  systemd:
+    name: "biesti_{{item.name}}"
+    enabled: yes
+    state: restarted
+  with_items: "{{ backends }}"  
+

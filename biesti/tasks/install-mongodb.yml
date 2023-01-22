@@ -1,0 +1,31 @@
+- name: add yum repo for mongodb
+  template:
+    src: "mongodb.repo.j2"
+    dest: "/etc/yum.repos.d/mongodb.repo"
+    mode: '0644'
+    owner: root
+    group: root
+
+
+- name: Install mongodb packages 
+  yum:
+    name:
+      - mongodb-org
+    state: present
+
+- name: copy mongodb config
+  template:
+    src: "mongod.conf.j2"
+    dest: /etc/mongod.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify: restart mongodb
+
+
+
+- name: Ensure mongodb is running and and enabled to start automatically on reboots
+  systemd:
+    name: mongod
+    enabled: yes
+    state: started
